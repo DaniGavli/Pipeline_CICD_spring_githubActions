@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 
 class DataControllerTest {
-//ajuste
+
     @Autowired
 
     DataController dataController;
