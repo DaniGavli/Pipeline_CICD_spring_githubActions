@@ -18,7 +18,7 @@ class DataControllerTest {
 
     void health() {
 
-        assertEquals( "HEALTH CHECK OK!", dataController.healthCheck());
+        assertEquals( "OK OK!!", dataController.healthCheck());
 
     }
 
@@ -26,7 +26,7 @@ class DataControllerTest {
 
     void version() {
 
-        assertEquals( "A versão atual é 1.0.0", dataController.version());
+        assertEquals( "A versao atual e 1.0.0", dataController.version());
 
     }
 

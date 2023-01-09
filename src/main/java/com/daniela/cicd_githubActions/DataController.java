@@ -24,7 +24,7 @@ public class DataController {
 
     public String version() {
 
-        return "A versão atual é 1.0.0";
+        return "A versao atual e 1.0.0";
 
     }
 

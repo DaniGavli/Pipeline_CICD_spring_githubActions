@@ -14,7 +14,7 @@
 	<name>cicd_githubActions</name>
 	<description>Projeto com spring boot e Ci CD com github actions</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
