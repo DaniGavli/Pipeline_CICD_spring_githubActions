@@ -24,7 +24,7 @@ class DataControllerTest {
 
     @Test
 
-    void version() {
+    void versao() {
 
         assertEquals( "A versao atual e 1.0.0", dataController.version());
 
@@ -32,7 +32,7 @@ class DataControllerTest {
 
     @Test
 
-    void nationsLength() {
+    void nacaoSize() {
 
         Integer nationsLength = dataController.getRandomNations().size();
 
@@ -42,11 +42,11 @@ class DataControllerTest {
 
     @Test
 
-    void currenciesLength() {
+    void moedaTam() {
 
-        Integer currenciesLength = dataController.getRandomCurrencies().size();
+        Integer moedaTam = dataController.getRandomCurrencies().size();
 
-        assertEquals(20, currenciesLength);
+        assertEquals(20, moedaTam);
 
     }
 

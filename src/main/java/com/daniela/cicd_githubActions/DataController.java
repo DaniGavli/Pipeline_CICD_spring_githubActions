@@ -20,7 +20,7 @@ public class DataController {
 
     }
 
-    @GetMapping("/version")
+    @GetMapping("/versao")
 
     public String version() {
 
@@ -28,13 +28,13 @@ public class DataController {
 
     }
 
-    @GetMapping("/nations")
+    @GetMapping("/nacoes")
 
     public JsonNode getRandomNations() {
 
         var objectMapper = new ObjectMapper();
 
-        var faker = new Faker(new Locale("en-US"));
+        var faker = new Faker(new Locale("pt-BR"));
 
         var nations = objectMapper.createArrayNode();
 
@@ -58,13 +58,13 @@ public class DataController {
 
     }
 
-    @GetMapping("/currencies")
+    @GetMapping("/moedas")
 
     public JsonNode getRandomCurrencies() {
 
         var objectMapper = new ObjectMapper();
 
-        var faker = new Faker(new Locale("en-US"));
+        var faker = new Faker(new Locale("pt-BR"));
 
         var currencies = objectMapper.createArrayNode();
 

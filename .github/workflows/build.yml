@@ -1,9 +1,12 @@
+#nome do fluxo
 name: CI/CD Pipeline
 on:
   workflow_dispatch: null
+#o fluxo e disparado a cada commit da branch main
   push:
     branches:
       - main
+#abaixo o job de teste da aplicacao, roda no ubuntu ultima versao
 jobs:
   tests:
     name: Unit tests
@@ -15,6 +18,7 @@ jobs:
         with:
           java-version: "11"
       - name: Cache Maven packages
+#abaixo armazena as dependencias em cache para melhorar as execucao do fluxo de trabalho
         uses: actions/cache@v1
         with:
           path: ~/.m2
@@ -22,77 +26,77 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Run Tests
         run: mvn -B test
-          #Sonar's Job
+          #Configuracoes do sonar
   sonar:
-    #Depends on test's job
+    #A execucao depende do job de teste acima
     needs: tests
     name: SonarCloud analysis
-    #Run on Ubuntu using the latest version
+    #roda com ubuntu na ultima versao
     runs-on: ubuntu-latest
-    #Job's steps
+    #passo a passo do job
     steps:
-      #Check-out your repository under $GITHUB_WORKSPACE, so your workflow can access it
+      #verifica o repositorio em $GITHUB_WORKSPACE, para o fluxo poder acessar
       - uses: actions/checkout@v1
-      #Set up JDK 11
+      #JDK 11
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
           java-version: '11'
-      #Set up SonarCloud cache
+      # SonarCloud cache para permitir as e builds rodem com mais agilidade
       - name: Cache SonarCloud packages
-        #This action allows caching dependencies and build outputs to improve workflow execution time.
+        #
         uses: actions/cache@v1
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
-      #Set up Maven cache
+      #Maven cache para permitir as e builds rodem com mais agilidade
       - name: Cache Maven packages
-        #This action allows caching dependencies and build outputs to improve workflow execution time.
+        #
         uses: actions/cache@v1
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-      #Analyze project with SonarCloud
+      #Ao projeto é analizado com SonarCloud
       - name: Analyze with SonarCloud
         run: mvn -B verify sonar:sonar -Dsonar.projectKey=DaniGavli_Pipeline_CICD_spring_githubActions -Dsonar.organization=danigavli -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          #Build's job
+          #Build job
   build:
-    #Depends on sonar's job
+    #Ddepende do job do sonar acima
     needs: sonar
     name: Build
-    #Run on Ubuntu using the latest version
+    #Roda com ubuntu
     runs-on: ubuntu-latest
     steps:
-      #Check-out your repository under $GITHUB_WORKSPACE, so your workflow can access it
+      #verifica o repositorio em $GITHUB_WORKSPACE, para o fluxo poder acessar
       - uses: actions/checkout@v1
-      #Set up JDK 11
+      #JDK 11
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
           java-version: '11'
-      #Set up Maven cache
+      #Maven cache para permitir as e builds rodem com mais agilidade
       - name: Cache Maven packages
-        #This action allows caching dependencies and build outputs to improve workflow execution time.
+        #
         uses: actions/cache@v1
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-      #Build the application using Maven
+      #Builda a aplicacao com maven
       - name: Build with Maven
         run: mvn -B package -DskipTests --file pom.xml
-      #Build the application using Maven
+      #
       - name: Upload JAR
-        #This uploads artifacts from your workflow allowing you to share data between jobs and store data once a workflow is complete.
+        #Isso carrega artefatos do fluxo de trabalho, permitindo que os dados sejam compartilhados entre jobs e armazene dados assim que um fluxo for concluido
         uses: actions/upload-artifact@v2
         with:
-          #Set artifact name
+          #Define o nome do artefato
           name: artifact
-          #From this path
+          #e busca no path abaixo
           path: target/cicd_githubActions-0.0.1-SNAPSHOT.jar
  
